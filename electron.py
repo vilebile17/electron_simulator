@@ -58,3 +58,9 @@ class Electron(pygame.sprite.Sprite):
         return pygame.Vector2(target_point.x - self_to_circle_centre.x, target_point.y - self_to_circle_centre.y)
 
 
+# draws lines between each of the electrons which makes for a really cool effect
+def draw_star_lines(list_of_electrons, screen):
+    for first_electron in list_of_electrons:
+        for second_electron in list_of_electrons:
+            if first_electron != second_electron:
+                pygame.draw.line(screen,"yellow",first_electron.position,second_electron.position)
