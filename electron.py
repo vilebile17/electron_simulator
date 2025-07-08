@@ -5,7 +5,7 @@ class Electron(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(self.containers)
         self.radius = ELECTRON_RADIUS
-        self.velocity = pygame.Vector2(0,0)
+        self.active_forces = []
         self.random_location()
             
     def random_location(self):
@@ -18,11 +18,24 @@ class Electron(pygame.sprite.Sprite):
         pygame.draw.circle(screen,"cyan",self.position,self.radius,10)
     
     def update(self,dt):
-        self.position += self.velocity
+        self.position += self.find_resultant_force() * dt
+        self.active_forces = []
 
     def repulsive_force(self, other):
-        # F = Q/d² where Q is a constant
-        distance = self.position.distance_to(other.position)
-        angle_from_self_to_other = math.asin((self.position.x-other.position.x)/ distance)
-
-        
+        self_to_other = pygame.Vector2(other.position.x - self.position.x, other.position.y - self.position.y)
+        length = self_to_other.length() # the length of the self_to_other Vector
+        # F = k/d² where k is a constant
+        magnitude = STATIC_CONSTANT / (length**2) # the length of the vector that we want
+        scalar = (magnitude * -1)/ length # it is multiplied by -1 in order to make them repel
+        force = pygame.Vector2(self_to_other.x * scalar, self_to_other.y * scalar)
+        self.active_forces.append(force)
+         
+    def find_resultant_force(self):
+        resultant_x, resultant_y = 0, 0
+        x_components, y_components = [],[]
+        if len(self.active_forces) != 0:
+            for force in self.active_forces:
+                x_components.append(force.x) 
+                y_components.append(force.y)
+            return pygame.Vector2( sum(x_components) / len(self.active_forces) , sum(y_components) / len(self.active_forces))
+        return pygame.Vector2(0,0)
