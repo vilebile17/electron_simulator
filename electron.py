@@ -19,6 +19,7 @@ class Electron(pygame.sprite.Sprite):
     
     def update(self,dt):
         self.position += self.find_resultant_force() * dt
+        self.stay_on_circle()
         self.active_forces = []
 
     def repulsive_force(self, other):
@@ -39,3 +40,14 @@ class Electron(pygame.sprite.Sprite):
                 y_components.append(force.y)
             return pygame.Vector2( sum(x_components) / len(self.active_forces) , sum(y_components) / len(self.active_forces))
         return pygame.Vector2(0,0)
+
+    def stay_on_circle(self):
+        circle_centre = pygame.Vector2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+        self_to_circle_centre = pygame.Vector2(circle_centre.x - self.position.x, circle_centre.y - self.position.y)
+        if self_to_circle_centre.length() != 300:
+            distance_needed_to_travel = self_to_circle_centre.length() - SHELL_RADIUS
+            scalar = distance_needed_to_travel / self_to_circle_centre.length() 
+            self.position += self_to_circle_centre * scalar
+
+
+

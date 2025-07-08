@@ -4,6 +4,9 @@ from electron import Electron
 from shell import Shell
 
 def main():
+    if len(sys.argv) != 2:
+        print("\n \n USAGE: python3 main.py <no. electrons>")
+        sys.exit(69)
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     time = pygame.time.Clock()
@@ -16,10 +19,9 @@ def main():
     Electron.containers = (updatable, drawable, electrons)
     Shell.containers = (updatable, drawable)
 
-    first_electron = Electron()
     noice_shell = Shell()
 
-    test = []
+    electron_list = []
 
     # Game Loop
     while True:
@@ -39,8 +41,8 @@ def main():
         for object in drawable:
             object.draw(screen)
         
-        if len(test) < 1:
-            test.append(Electron())
+        if len(electron_list) < (float(sys.argv[1])//1): # the strange sytax is just incase some idiot tries to spawn fractions of an electron
+            electron_list.append(Electron())
         
         pygame.display.flip()
         dt = time.tick(60) / 1000
