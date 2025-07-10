@@ -46,7 +46,7 @@ class Electron(pygame.sprite.Sprite):
     def stay_on_circle(self):
         circle_centre = pygame.Vector2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
         self_to_circle_centre = pygame.Vector2(circle_centre.x - self.position.x, circle_centre.y - self.position.y)
-        if self_to_circle_centre.length() != 300:
+        if self_to_circle_centre.length() != SHELL_RADIUS:
             distance_needed_to_travel = self_to_circle_centre.length() - SHELL_RADIUS
             scalar = distance_needed_to_travel / self_to_circle_centre.length() 
             self.position += self_to_circle_centre * scalar

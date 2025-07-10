@@ -1,17 +1,16 @@
 import pygame,sys
 from constants import *
+number_of_electrons = NO_ELECTRONS
 from electron import Electron, draw_star_lines
 from shell import Shell
 
 def main():
-    if len(sys.argv) < 2:
-        print("\n \n USAGE: python3 main.py <no. electrons> ['--star']")
-        sys.exit(69)
-
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     time = pygame.time.Clock()
     dt = 0
+    global number_of_electrons
+    key_clicked = False
 
     electrons = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
@@ -45,9 +44,25 @@ def main():
         for object in drawable:
             object.draw(screen)
         
-        if len(electron_list) < (float(sys.argv[1])//1): # the strange sytax is just incase some idiot tries to spawn fractions of an electron
+        if len(electron_list) < number_of_electrons: 
             electron_list.append(Electron())
+        elif len(electron_list) > number_of_electrons:
+            if len(electron_list) != 0:
+                electron_list[-1].kill()
+                electron_list.pop()
         
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            if not key_clicked:
+                number_of_electrons += 1
+                key_clicked = True
+        elif keys[pygame.K_DOWN]:
+            if not key_clicked:
+                number_of_electrons -= 1
+                key_clicked = True
+        else:
+            key_clicked = False
+
         pygame.display.flip()
         dt = time.tick(60) / 1000
 
