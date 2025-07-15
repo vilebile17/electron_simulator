@@ -1,16 +1,18 @@
 import pygame,sys
 from constants import *
-number_of_electrons = NO_ELECTRONS
 from electron import Electron, draw_star_lines
 from shell import Shell
+from user_interface import no_electrons 
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     time = pygame.time.Clock()
     dt = 0
-    global number_of_electrons
     key_clicked = False
+
+    # setting default values
+    number_of_electrons = 5
 
     electrons = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
@@ -21,6 +23,12 @@ def main():
 
     electron_shell = Shell()
     electron_list = []
+    
+    # This is for the top right corner which show the total number of electrons
+    up_arrow = pygame.transform.smoothscale(pygame.image.load("assets/up_arrow.png"),(35,35))        
+    down_arrow = pygame.transform.rotate(pygame.transform.smoothscale(pygame.image.load("assets/up_arrow.png"),(35,35)),180)
+    up_arrow_rect = up_arrow.get_rect(topleft=(1180,32))
+    down_arrow_rect = down_arrow.get_rect(topleft=(1080,32))
 
     # Game Loop
     while True:
@@ -29,6 +37,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if up_arrow_rect.collidepoint(event.pos):
+                    number_of_electrons += 1
+                elif down_arrow_rect.collidepoint(event.pos):
+                    number_of_electrons -= 1
 
         screen.fill("black")
         # this rather overly-complicated part is what makes the electrons repel each other
@@ -66,17 +79,11 @@ def main():
                     key_clicked = True
         else:
             key_clicked = False
-
-        # Shows the text in the topright which says "number of electrons"
-        small_text = pygame.font.Font(FONT,SMALL_FONT_SIZE)
-        no_electrons_text = small_text.render("number of electrons",True, "white")
-        text_rect1 = no_electrons_text.get_rect(topright=(SCREEN_WIDTH - 5,5))
-        screen.blit(no_electrons_text,text_rect1)
-        # Shows the text in the topright that actually shows the number of electrons
-        large_text = pygame.font.Font(FONT,LARGE_FONT_SIZE)
-        no_electrons_text = large_text.render(f"{number_of_electrons}",True, "white")
-        text_rect2 = no_electrons_text.get_rect(topright=(SCREEN_WIDTH - 100,30))
-        screen.blit(no_electrons_text,text_rect2)
+ 
+        # This is for the top right corner which show the total number of electrons
+        no_electrons(screen,number_of_electrons)
+        screen.blit(up_arrow,up_arrow_rect)
+        screen.blit(down_arrow,down_arrow_rect)
 
 
 
