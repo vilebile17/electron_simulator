@@ -28,8 +28,8 @@ def main():
     # This is for the top right corner which show the total number of electrons
     up_arrow = pygame.transform.smoothscale(pygame.image.load("assets/up_arrow.png"),(35,35))        
     down_arrow = pygame.transform.rotate(pygame.transform.smoothscale(pygame.image.load("assets/up_arrow.png"),(35,35)),180)
-    up_arrow_rect = up_arrow.get_rect(topleft=(1180,32))
-    down_arrow_rect = down_arrow.get_rect(topleft=(1080,32))
+    up_arrow_rect = up_arrow.get_rect(topleft=(1200,32))
+    down_arrow_rect = down_arrow.get_rect(topleft=(1060,32))
      # This is for the top right corner which show the total number of electrons
     e_button = pygame.transform.smoothscale(pygame.image.load("assets/E.png"),(35,35))        
     q_button = pygame.transform.smoothscale(pygame.image.load("assets/Q.png"),(35,35))  
@@ -49,11 +49,14 @@ def main():
                 if up_arrow_rect.collidepoint(event.pos):
                     number_of_electrons += 1
                 elif down_arrow_rect.collidepoint(event.pos):
-                    number_of_electrons -= 1
+                    if number_of_electrons > 0:
+                        number_of_electrons -= 1
                 elif e_rect.collidepoint(event.pos):
-                    electron_speed += 5
+                    if electron_speed < 90:
+                        electron_speed += 5
                 elif q_rect.collidepoint(event.pos):
-                    electron_speed -= 5
+                    if electron_speed > -90:
+                        electron_speed -= 5
 
         screen.fill("black")
         # this rather overly-complicated part is what makes the electrons repel each other
