@@ -2,7 +2,7 @@ import pygame,sys
 from constants import *
 from electron import Electron, draw_star_lines
 from shell import Shell
-from user_interface import no_electrons 
+from user_interface import no_electrons, move_speed
 
 def main():
     pygame.init()
@@ -13,13 +13,14 @@ def main():
 
     # setting default values
     number_of_electrons = 5
+    electron_speed = 25
 
     electrons = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     
     Electron.containers = (updatable, drawable, electrons)
-    Shell.containers = (updatable, drawable)
+    Shell.containers = (drawable, )
 
     electron_shell = Shell()
     electron_list = []
@@ -29,6 +30,13 @@ def main():
     down_arrow = pygame.transform.rotate(pygame.transform.smoothscale(pygame.image.load("assets/up_arrow.png"),(35,35)),180)
     up_arrow_rect = up_arrow.get_rect(topleft=(1180,32))
     down_arrow_rect = down_arrow.get_rect(topleft=(1080,32))
+     # This is for the top right corner which show the total number of electrons
+    e_button = pygame.transform.smoothscale(pygame.image.load("assets/E.png"),(35,35))        
+    q_button = pygame.transform.smoothscale(pygame.image.load("assets/Q.png"),(35,35))  
+    e_rect = e_button.get_rect(topleft=(190,32))
+    q_rect = q_button.get_rect(topleft=(50,32))
+
+
 
     # Game Loop
     while True:
@@ -42,6 +50,10 @@ def main():
                     number_of_electrons += 1
                 elif down_arrow_rect.collidepoint(event.pos):
                     number_of_electrons -= 1
+                elif e_rect.collidepoint(event.pos):
+                    electron_speed += 5
+                elif q_rect.collidepoint(event.pos):
+                    electron_speed -= 5
 
         screen.fill("black")
         # this rather overly-complicated part is what makes the electrons repel each other
@@ -54,7 +66,7 @@ def main():
         if "--star" in sys.argv:
             draw_star_lines(electron_list,screen)
         for object in updatable:
-            object.update(dt)
+            object.update(dt,electron_speed)
         for object in drawable:
             object.draw(screen)
        
@@ -77,6 +89,16 @@ def main():
                 if number_of_electrons > 0:
                     number_of_electrons -= 1
                     key_clicked = True
+        elif keys[pygame.K_e]:
+            if not key_clicked:
+                if electron_speed < 90:
+                    electron_speed += 5 
+                    key_clicked = True
+        elif keys[pygame.K_q]:
+            if not key_clicked:
+                if electron_speed > -90:
+                    electron_speed -= 5
+                    key_clicked = True
         else:
             key_clicked = False
  
@@ -84,7 +106,9 @@ def main():
         no_electrons(screen,number_of_electrons)
         screen.blit(up_arrow,up_arrow_rect)
         screen.blit(down_arrow,down_arrow_rect)
-
+        move_speed(screen,electron_speed)
+        screen.blit(e_button,e_rect)
+        screen.blit(q_button,q_rect)
 
 
         pygame.display.flip()

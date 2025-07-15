@@ -1,5 +1,5 @@
 import pygame, random, math
-from constants import ELECTRON_RADIUS, SHELL_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, STATIC_CONSTANT, DEGREES_PER_FRAME 
+from constants import ELECTRON_RADIUS, SHELL_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, STATIC_CONSTANT 
 
 class Electron(pygame.sprite.Sprite):
     def __init__(self):
@@ -18,8 +18,8 @@ class Electron(pygame.sprite.Sprite):
     def draw(self,screen):
         pygame.draw.circle(screen,"cyan",self.position,self.radius,10)
     
-    def update(self,dt):
-        self.velocity = self.find_resultant_force() + self.find_momentum()
+    def update(self,dt,electron_speed):
+        self.velocity = self.find_resultant_force() + self.find_momentum(electron_speed)
         self.position += self.velocity * dt
         self.stay_on_circle()
         self.active_forces = []
@@ -51,10 +51,10 @@ class Electron(pygame.sprite.Sprite):
             scalar = distance_needed_to_travel / self_to_circle_centre.length() 
             self.position += self_to_circle_centre * scalar
 
-    def find_momentum(self): # Technically it isn't momentum, it's just the natural movement around the circle.
+    def find_momentum(self,electron_speed): # Technically it isn't momentum, it's just the natural movement around the circle.
         circle_centre = pygame.Vector2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
         self_to_circle_centre = pygame.Vector2(circle_centre.x - self.position.x, circle_centre.y - self.position.y)
-        target_point = self_to_circle_centre.rotate(DEGREES_PER_FRAME)
+        target_point = self_to_circle_centre.rotate(electron_speed)
         return pygame.Vector2(target_point.x - self_to_circle_centre.x, target_point.y - self_to_circle_centre.y)
 
 
