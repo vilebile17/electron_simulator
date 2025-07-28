@@ -5,6 +5,11 @@ It's rather straight forward - a circle on the screen which has some little blue
 It also contains a feature that is a little more complex which is that the electrons repel each other!
 
 ### Usage:
+clone the repo:
+```
+git pull github.com/vilebile17/electron_simulator.git main
+```
+
 run it using your program of choice, personally I use 'uv' but it doesn't matter too much.
 
 So for my case:
