@@ -2,7 +2,7 @@
 
 welcome to this little electron simulator, which was built through pygame.
 It's rather straight forward - a circle on the screen which has some little blue dots (electrons) that spin around it.
-It also contains a much more tricky to implement feature where the electrons repel each other and thus spread out
+It also contains a feature that is a little more complex which is that the electrons repel each other!
 
 ### Usage:
 run it using your program of choice, personally I use 'uv' but it doesn't matter too much.
@@ -11,18 +11,9 @@ So for my case:
 ```
 uv run main.py
 ```
-**However** there are more things that we need to add on the end.
-
-specifically, the number of electrons that you would like to show.
-eg.
-```
-uv run main.py 10
-```
-would show ten electrons
 
 **There is also an optional flag** -> "--star"
 This will draw lines between each of the electrons which makes a very cool star pattern!
-
 
 ## Build Info
 This project required quite a hefty amount of maths, more-or-less all of which can be found in electron.py.
