@@ -23,7 +23,7 @@ The mathematics required include *trigonometry*, *gradients* and most importantl
 Pygame comes with a built in pygame.Vector2() object which is incredibly useful for finding coordinates and drawing on a plane.
 
 
-![vector head-tail rule](./head-tail_rule.jpg)
+![vector head-tail rule](assets/head-tail_rule.jpg)
 This rule was incredibly useful, it's a way of finding the vector between two vector heads.
 In essence, we go back the first vector (vector a in the picture) and then forward the second one (vector b in the picture).
 The way to travel multiple vectors is by adding them up, so we add *vector b* with the *inverse of vector a* (which is why we have -a)
