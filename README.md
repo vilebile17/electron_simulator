@@ -5,7 +5,7 @@ It's rather straight forward - a circle on the screen which has some little blue
 It also contains a feature that is a little more complex which is that the electrons repel each other!
 
 ### Usage:
-run it using your program of choice, personally I use 'uv' but it doesn't matter too much.
+run it using your program of choice, personally I use 'uv'. I would also recommend that you use it as the pyproject.toml is already in there and it will make it much easier 
 
 So for my case:
 ```
